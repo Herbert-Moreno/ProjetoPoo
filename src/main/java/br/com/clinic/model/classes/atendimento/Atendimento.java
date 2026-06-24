@@ -26,17 +26,15 @@ public class Atendimento {
 
     private final List<Procedimento> procedimentos = new ArrayList<>();
 
-    public Atendimento(Paciente paciente, Profissional profissional, LocalDate dataHora, List<Procedimento> procedimentosIniciais) {
+    public Atendimento(Paciente paciente, Profissional profissional, List<Procedimento> procedimentosIniciais) {
 
         this.paciente = Objects.requireNonNull(paciente, "O cliente é obrigatório.");
         this.profissional = Objects.requireNonNull(profissional, "O profissional é obrigatório.");
-        this.data = Objects.requireNonNull(dataHora, "A data é obrigatória.");
 
         if (procedimentosIniciais == null || procedimentosIniciais.isEmpty()) {
             throw new IllegalArgumentException("O atendimento deve conter pelo menos um procedimento.");
         }
         this.procedimentos.addAll(procedimentosIniciais);
-
         this.status = StatusAtendimento.AGENDADO;
     }
 
@@ -98,13 +96,12 @@ public class Atendimento {
 
     @Override
     public String toString() {
-        return "Atendimento {" +
-                "id=" + id +
-                ", cliente=" + (paciente != null ? paciente.getNome() : "Não informado") +
-                ", profissional=" + (profissional != null ? profissional.getNome() : "Não informado") +
-                ", procedimentos=" + procedimentos +
-                ", status=" + status +
-                ", pagamento=" + (pagamento != null ? "R$ " + pagamento.getValor() : "Pendente") +
-                '}';
+        return "\nAtendimento " +
+                "\nID.: " + id +
+                "\nPaciente.: " + (paciente != null ? paciente.getNome() : "Não informado") +
+                "\nProfissional.: " + (profissional != null ? profissional.getNome() : "Não informado") +
+                "\nProcedimentos.: " + procedimentos +
+                "\nStatus.: " + status +
+                "\nPagamento.: " + (pagamento != null ? "R$ " + pagamento.getValor() : "Pendente");
     }
 }

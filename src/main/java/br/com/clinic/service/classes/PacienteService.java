@@ -7,6 +7,7 @@ import br.com.clinic.service.utils.ValidadorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -17,6 +18,8 @@ import java.util.Optional;
 /* Classe: PacienteService */
 public class PacienteService implements IPacienteService {
     private final List<Paciente> db = new ArrayList<>();
+    private int idSequencial = 0;
+
     /**
      * Valida os dados obrigatórios e persiste ou atualiza um paciente.
      * @param paciente O objeto Paciente com os dados a serem validados e salvos.
@@ -26,7 +29,16 @@ public class PacienteService implements IPacienteService {
     public void salvar(Paciente paciente) {
         ValidadorUtils.validarTextoObrigatorio(paciente.getNome(), "O nome do cliente e obrigatório.");
         //ValidadorUtils.validarCpf(paciente.getCpf());
-        this.db.add(paciente);
+
+        if (paciente.getId() == 0){
+            paciente.setId(idSequencial++);
+            db.add(paciente);
+        }else {
+            db.removeIf(
+                    a -> Objects.equals(a.getId(), paciente.getId()));
+            db.add(paciente);
+        }
+        //this.db.add(paciente);
     }
 
     /**

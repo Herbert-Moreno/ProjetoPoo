@@ -30,8 +30,8 @@ public class ProfissionalUi implements UI<IProfissionalService> {
             switch (opcao) {
                 case 1 -> this.cadastrarProfissional(service);
                 case 2 -> this.listarProfissionais(service);
-                case 4 -> this.buscarProfissionalEspecialidade(service);
-                case 5 -> this.deletarProfissional(service);
+                case 3 -> this.buscarProfissionalEspecialidade(service);
+                case 4 -> this.deletarProfissional(service);
                 default -> System.out.println("Opcao invalida.");
             }
         }
@@ -57,6 +57,7 @@ public class ProfissionalUi implements UI<IProfissionalService> {
         double salario = this.ui.lerDouble("Salario: ");
 
         Endereco endereco = new Endereco(rua, bairro, cidade, cep);
+        //teste temporario
         Profissional profissional = new Profissional(cargo, especialidade, registro, dataContratacao, salario, nome, cpf, dataNascimento, telefone, email, endereco, sexo);
 
         service.salvar(profissional);

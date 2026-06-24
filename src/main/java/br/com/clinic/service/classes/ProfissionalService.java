@@ -7,6 +7,7 @@ import br.com.clinic.service.utils.ValidadorUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Optional;
 /* Classe: ProfissionalService */
 public class ProfissionalService implements IProfissionalService {
     private final List<Profissional> db = new ArrayList<>();
+    private int idSequencial = 0;
 
     /**
      * Valida os dados obrigatórios e o registro do conselho antes de persistir o profissional.
@@ -32,7 +34,16 @@ public class ProfissionalService implements IProfissionalService {
         ValidadorUtils.validarTextoObrigatorio(profissional.getRegistroProfissional(), "O registro do conselho profissional e obrigatório.");
         //ValidadorUtils.validarTextoObrigatorio(profissional.getRegistroEspecialidade(), "O registro do conselho profissional e obrigatório.");
 
-        this.db.add(profissional);
+        // teste de id
+        if (profissional.getId() == 0){
+            profissional.setId(idSequencial++);
+            db.add(profissional);
+        }else {
+            db.removeIf(
+                    a -> Objects.equals(a.getId(), profissional.getId()));
+            db.add(profissional);
+        }
+        //this.db.add(profissional);
     }
 
     /**

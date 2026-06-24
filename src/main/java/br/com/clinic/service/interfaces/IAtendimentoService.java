@@ -12,15 +12,14 @@ import java.util.List;
  * @author Raul Pablo
  * */
 public interface IAtendimentoService extends CrudService<Atendimento, Long> {
-    void criarAtendimento(
+    Atendimento criarAtendimento(
             Long clienteId,
             Long profisionalId,
-            List<Procedimento> procedimentos,
-            LocalDate data
+            List<Procedimento> procedimentos
     );
 
-    void finalizarAtendimento(Long atendimentoId, FormaPagamento formaPagamento);
-    void cancelarAtendimento(Long atendimentoId);
+    Atendimento finalizarAtendimento(Long atendimentoId, FormaPagamento formaPagamento);
+    Atendimento cancelarAtendimento(Long atendimentoId);
 
     List<Atendimento> buscarPorData(LocalDate data);
 }

@@ -8,6 +8,7 @@ import br.com.clinic.service.interfaces.IFinanceiroService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -20,6 +21,7 @@ import java.util.Optional;
 /* Classe: FinanceiroService */
 public class FinanceiroService implements IFinanceiroService {
     private final List<Pagamento> db = new ArrayList<>();
+    private int idSequencial = 1;
 
     /**
      * Valida as restrições monetárias e temporais de um pagamento antes de salvá-lo.
@@ -35,6 +37,16 @@ public class FinanceiroService implements IFinanceiroService {
         if (pagamento.getData_pagamento() == null) {
             throw new IllegalArgumentException("A data do lançamento é obrigatória.");
         }
+
+        // test id
+//        if (pagamento.getId_pagamento() == 0){
+//            pagamento.setId(idSequencial++);
+//            db.add(pagamento);
+//        }else {
+//            db.removeIf(
+//                    a -> Objects.equals(a.getId_pagamento(), pagamento.getId()));
+//            db.add(pagamento);
+//        }
 
         this.db.add(pagamento);
     }
@@ -79,6 +91,7 @@ public class FinanceiroService implements IFinanceiroService {
 
         Pagamento pagamento = new Pagamento(valor, formaPagamento);
         pagamento.confirmarPagamento();
+
         this.salvar(pagamento);
         return pagamento;
     }
