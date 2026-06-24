@@ -24,7 +24,8 @@ public class InterfaceUi {
         System.out.flush();
     }
 
-    public int lerInt() {
+    public int lerInt(String prompt) {
+        System.out.print(prompt);
         while (!this.scanner.hasNextInt()) {
             this.scanner.nextLine();
             System.out.print("Informe um número valido: ");

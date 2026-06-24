@@ -16,7 +16,7 @@ import java.util.Optional;
 
 /* Classe: PacienteService */
 public class PacienteService implements IPacienteService {
-    List<Paciente> pacientes = new ArrayList<>();
+    private final List<Paciente> db = new ArrayList<>();
     /**
      * Valida os dados obrigatórios e persiste ou atualiza um paciente.
      * @param paciente O objeto Paciente com os dados a serem validados e salvos.
@@ -25,8 +25,8 @@ public class PacienteService implements IPacienteService {
     @Override
     public void salvar(Paciente paciente) {
         ValidadorUtils.validarTextoObrigatorio(paciente.getNome(), "O nome do cliente e obrigatório.");
-        ValidadorUtils.validarCpf(paciente.getCpf());
-        this.pacientes.add(paciente);
+        //ValidadorUtils.validarCpf(paciente.getCpf());
+        this.db.add(paciente);
     }
 
     /**
@@ -36,7 +36,7 @@ public class PacienteService implements IPacienteService {
     @Override
     public void deletar(Long id) {
         Optional<Paciente> paciente = this.buscarPorId(id);
-        paciente.ifPresent(value -> this.pacientes.remove(value));
+        paciente.ifPresent(value -> this.db.remove(value));
     }
 
     /**
@@ -46,7 +46,7 @@ public class PacienteService implements IPacienteService {
      */
     @Override
     public Optional<Paciente> buscarPorId(Long id) {
-        for (Paciente item : this.pacientes) {
+        for (Paciente item : this.db) {
             if (item.getId() == id) {
                 return Optional.of(item);
             }
@@ -61,9 +61,8 @@ public class PacienteService implements IPacienteService {
      */
     @Override
     public Optional<Paciente> buscarPorNome(String nome) {
-        List<Paciente> ls = new ArrayList<>();
         ValidadorUtils.validarTamanhoMinimo(nome, 3, "Valor inserido abaixo do minimo nescessario");
-        for (Paciente p : this.pacientes) {
+        for (Paciente p : this.db) {
             if (p.getNome().equals(nome)) {
                 return Optional.of(p);
             }
@@ -77,7 +76,7 @@ public class PacienteService implements IPacienteService {
      */
     @Override
     public List<Paciente> listarTodos() {
-        return this.pacientes;
+        return this.db;
     }
 
 }

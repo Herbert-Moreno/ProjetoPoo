@@ -1,26 +1,26 @@
 package br.com.clinic.presentation;
 
 import br.com.clinic.model.classes.pessoa.Endereco;
-import br.com.clinic.model.classes.pessoa.Paciente;
+import br.com.clinic.model.classes.pessoa.Profissional;
 import br.com.clinic.model.enums.SexoEnum;
-import br.com.clinic.service.interfaces.IPacienteService;
+import br.com.clinic.service.interfaces.IProfissionalService;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class PacienteUi implements UI<IPacienteService> {
+public class ProfissionalUi implements UI<IProfissionalService> {
     InterfaceUi ui;
 
-    public PacienteUi(InterfaceUi ui) {
+    public ProfissionalUi(InterfaceUi ui) {
         this.ui = ui;
     }
 
-    public void show(IPacienteService service) {
+    public void show(IProfissionalService service) {
         while (true) {
-            System.out.println("\n--- Paciente ---");
-            System.out.println("1 - Cadastrar paciente");
-            System.out.println("2 - Listar pacientes");
-            System.out.println("3 - Buscar por nome");
-            System.out.println("4 - Deletar paciente");
+            System.out.println("\n--- Profissional ---");
+            System.out.println("1 - Cadastrar profissional");
+            System.out.println("2 - Listar profissionais");
+            System.out.println("3 - Buscar por especialidade");
+            System.out.println("4 - Deletar profissional");
             System.out.println("0 - Voltar");
             System.out.print("Opcao: ");
 
@@ -28,18 +28,18 @@ public class PacienteUi implements UI<IPacienteService> {
             if (opcao == 0) return;
 
             switch (opcao) {
-                case 1 -> this.cadastrarPaciente(service);
-                case 2 -> this.listarPacientes(service);
-                case 3 -> this.buscarPacienteNome(service);
-                case 4 -> this.deletarPaciente(service);
-                default -> System.out.println("Opcao inválida.");
+                case 1 -> this.cadastrarProfissional(service);
+                case 2 -> this.listarProfissionais(service);
+                case 4 -> this.buscarProfissionalEspecialidade(service);
+                case 5 -> this.deletarProfissional(service);
+                default -> System.out.println("Opcao invalida.");
             }
         }
     }
 
-    private void cadastrarPaciente(IPacienteService service) {
+    private void cadastrarProfissional(IProfissionalService service) {
         this.ui.apagar();
-        System.out.println("\nCadastro de paciente");
+        System.out.println("\nCadastro de profissional");
         String nome = this.ui.lerTexto("Nome: ");
         String cpf = this.ui.lerTexto("CPF: ");
         String dataNascimento = this.ui.lerTexto("Data de nascimento (dd/MM/yyyy): ");
@@ -50,31 +50,37 @@ public class PacienteUi implements UI<IPacienteService> {
         String cidade = this.ui.lerTexto("Cidade: ");
         String cep = this.ui.lerTexto("CEP: ");
         SexoEnum sexo = this.escolherSexo();
-        double altura = this.ui.lerDouble("Altura: ");
-        double peso = this.ui.lerDouble("Peso: ");
-        String alergia = this.ui.lerTexto("Alergias: ");
-        String objetivo = this.ui.lerTexto("Objetivo estetico: ");
+        String cargo = this.ui.lerTexto("Cargo: ");
+        String especialidade = this.ui.lerTexto("Especialidade: ");
+        String registro = this.ui.lerTexto("Registro profissional: ");
+        String dataContratacao = this.ui.lerTexto("Data de contratacao (dd/MM/yyyy): ");
+        double salario = this.ui.lerDouble("Salario: ");
 
         Endereco endereco = new Endereco(rua, bairro, cidade, cep);
-        Paciente paciente = new Paciente(altura, peso, alergia, objetivo, nome, cpf, dataNascimento, telefone, email, endereco, sexo);
+        Profissional profissional = new Profissional(cargo, especialidade, registro, dataContratacao, salario, nome, cpf, dataNascimento, telefone, email, endereco, sexo);
 
-        service.salvar(paciente);
+        service.salvar(profissional);
         System.out.println("Paciente cadastrado com sucesso.");
     }
 
-    private void listarPacientes(IPacienteService service) {
+    private void listarProfissionais(IProfissionalService service) {
         ui.apagar();
         System.out.println("---------------------------");
         service.listarTodos().forEach(v -> System.out.println(v.toString()));
         System.out.println("---------------------------");
     }
 
-    private void buscarPacienteNome(IPacienteService service) {
-        String nome = this.ui.lerTexto("Digite o Nome: ");
-        System.out.println(service.buscarPorNome(nome).toString());
+    private void buscarProfissionalEspecialidade(IProfissionalService service) {
+        String especialidade = this.ui.lerTexto("Digite a Especialidade: ");
+        System.out.println("----- "+especialidade+" -----");
+        service.buscarPorEspecialidade(especialidade).forEach(v -> {
+            System.out.println(v.getId() + ":" + v.toString());
+            System.out.println();
+        });
+        System.out.println("--------------------");
     }
 
-    private void deletarPaciente(IPacienteService service) {
+    private void deletarProfissional(IProfissionalService service) {
         AtomicInteger idx = new AtomicInteger();
         System.out.println("-----------");
         service.listarTodos().forEach(v -> {
@@ -87,7 +93,7 @@ public class PacienteUi implements UI<IPacienteService> {
             System.out.println("Esse ID não existe na lista!");
         } else {
             service.deletar(id);
-            System.out.println("Deletando Paciente");
+            System.out.println("Deletando Profissional");
         }
     }
 
